@@ -144,6 +144,8 @@ if __name__ == '__main__':
 
             try:
                 parsed_message_date = dateparser.parse(message.date)
+                parsed_message_date = parsed_message_date.split("-")
+                parsed_message_date = parsed_message_date[1]+"-"+parsed_message_date[2]
             except Exception as e:
                 logging.exception(e)
                 logging.error("Skipping message '%s' subject '%s' because date can not be parsed '%s'", uid, subject, message.date)
