@@ -132,6 +132,7 @@ if __name__ == '__main__':
                 filter_options['date__gt'] = options.date_after.date()
             if options.date_before:
                 filter_options['date__lt'] = options.date_before.date()
+            filter_options['raw'] = 'has:attachment'
 
         logging.info("Listing messages matching the following criteria: %s",
                      ", ".join([k + "=" + str(v) for k, v in filter_options.items()]))
@@ -173,7 +174,7 @@ if __name__ == '__main__':
                                                                  attachment_idx=idx,
                                                                  subject=subject,
                                                                  message_id=message.message_id,
-                                                                 date=dmy,
+                                                                 date=parsed_message_date,
                                                                  folder=folder)
 
                     download_path = os.path.join(options.download_folder, download_filename)
@@ -182,6 +183,7 @@ if __name__ == '__main__':
 
                     if os.path.isfile(download_path):
                         logging.warning("Overwriting file: '%s'", download_path)
+                        break
 
                     with open(download_path, "wb") as fp:
                         fp.write(attachment.get('content').read())
